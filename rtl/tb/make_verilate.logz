@@ -1,0 +1,155 @@
+CONF_HPDCACHE_PA_WIDTH=34
+CONF_HPDCACHE_SETS=2
+CONF_HPDCACHE_WAYS=1
+CONF_HPDCACHE_WORD_WIDTH=32
+CONF_HPDCACHE_CL_WORDS=2
+CONF_HPDCACHE_REQ_WORDS=1
+CONF_HPDCACHE_REQ_TRANS_ID_WIDTH=2
+CONF_HPDCACHE_REQ_SRC_ID_WIDTH=1
+CONF_HPDCACHE_VICTIM_SEL=HPDCACHE_VICTIM_RANDOM
+CONF_HPDCACHE_DATA_WAYS_PER_RAM_WORD=1
+CONF_HPDCACHE_DATA_SETS_PER_RAM=2
+CONF_HPDCACHE_DATA_RAM_WBYTEENABLE=0
+CONF_HPDCACHE_ACCESS_WORDS=1
+CONF_HPDCACHE_WBUF_DIR_ENTRIES=2
+CONF_HPDCACHE_WBUF_DATA_ENTRIES=2
+CONF_HPDCACHE_WBUF_WORDS=1
+CONF_HPDCACHE_WBUF_TIMECNT_WIDTH=3
+CONF_HPDCACHE_WBUF_SEND_FEEDTHROUGH=0
+CONF_HPDCACHE_MSHR_SETS=1
+CONF_HPDCACHE_MSHR_WAYS=1
+CONF_HPDCACHE_MSHR_WAYS_PER_RAM_WORD=1
+CONF_HPDCACHE_MSHR_SETS_PER_RAM=1
+CONF_HPDCACHE_MSHR_RAM_WBYTEENABLE=0
+CONF_HPDCACHE_MSHR_USE_REGBANK=1
+CONF_HPDCACHE_CBUF_ENTRIES=0
+CONF_HPDCACHE_REFILL_FIFO_DEPTH=2 
+CONF_HPDCACHE_REFILL_CORE_RSP_FEEDTHROUGH=1
+CONF_HPDCACHE_RTAB_ENTRIES=2 
+CONF_HPDCACHE_FLUSH_ENTRIES=0
+CONF_HPDCACHE_FLUSH_FIFO_DEPTH=0
+CONF_HPDCACHE_MEM_ADDR_WIDTH=64 
+CONF_HPDCACHE_MEM_ID_WIDTH=4
+CONF_HPDCACHE_MEM_DATA_WIDTH=64
+CONF_HPDCACHE_WT_ENABLE=1
+CONF_HPDCACHE_WB_ENABLE=0
+CONF_HPDCACHE_LOW_LATENCY=1
+CONF_HPDCACHE_ECC_ENABLE=0 
+CONF_HPDCACHE_ECC_SCRUBBER_ENABLE=0
+Verilating the RTL sources... (LOG: /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log)
+Scanning /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log
+
++--------------------------------------------------+------+--------+---+------+
+|                     Log file                     |Errors|Warnings|EOT|STATUS|
++--------------------------------------------------+------+--------+---+------+
+|/home/zac888/cv-hpdcache/rtl/tb/build/verilate.log|   0  |   85   |YES| PASS |
++--------------------------------------------------+------+--------+---+------+
+
+
+ START WARNING SUMMARY
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (1) : %Warning-WIDTHEXPAND: hpdcache_wrapper.sv:20:28: Operator SHIFTL expects 32 bits on the LHS, but LHS's CONST '4'h1' generates 4 bits.
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (7) : %Warning-WIDTHTRUNC: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_uncached.sv:603:36: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'amo_write_data' generates 64 bits.
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (13) : %Warning-WIDTHEXPAND: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_uncached.sv:635:42: Operator ASSIGN expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'req_addr_q' generates 34 bits.
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (17) : %Warning-WIDTHEXPAND: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_uncached.sv:664:43: Operator ASSIGN expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'req_addr_q' generates 34 bits.
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (21) : %Warning-WIDTHTRUNC: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_uncached.sv:796:25: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'sc_rdata_dword' generates 64 bits.
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (25) : %Warning-WIDTHEXPAND: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:283:35: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's REPLICATE generates 34 bits.
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (29) : %Warning-WIDTHEXPAND: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:840:10: Output port connection 'val_o' expects 2 bits on the pin connection, but pin connection's VARREF 'refill_way_o' generates 1 bits.
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (33) : %Warning-WIDTHEXPAND: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_wbuf.sv:663:41: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's REPLICATE generates 34 bits.
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (37) : %Warning-WIDTHEXPAND: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:1396:31: Operator ASSIGNW expects 34 bits on the Assign RHS, but Assign RHS's CONST '1'h0' generates 1 bits.
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (41) : %Warning-WIDTHEXPAND: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:1399:31: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's CONST '1'h0' generates 1 bits.
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (45) : %Warning-UNUSEDPARAM: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/utils/ecc/prim_secded_pkg.sv:78:25: Parameter is not used: 'Secded3629ZeroEcc'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (51) : %Warning-UNUSEDPARAM: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/utils/ecc/prim_secded_pkg.sv:79:26: Parameter is not used: 'Secded3629ZeroWord'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (55) : %Warning-UNUSEDPARAM: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/utils/ecc/prim_secded_pkg.sv:87:25: Parameter is not used: 'Secded3932ZeroEcc'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (59) : %Warning-UNUSEDPARAM: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/utils/ecc/prim_secded_pkg.sv:88:26: Parameter is not used: 'Secded3932ZeroWord'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (63) : %Warning-UNUSEDPARAM: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/utils/ecc/prim_secded_pkg.sv:96:25: Parameter is not used: 'Secded5548ZeroEcc'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (67) : %Warning-UNUSEDPARAM: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/utils/ecc/prim_secded_pkg.sv:97:26: Parameter is not used: 'Secded5548ZeroWord'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (71) : %Warning-UNUSEDPARAM: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/utils/ecc/prim_secded_pkg.sv:105:25: Parameter is not used: 'Secded7264ZeroEcc'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (75) : %Warning-UNUSEDPARAM: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/utils/ecc/prim_secded_pkg.sv:106:26: Parameter is not used: 'Secded7264ZeroWord'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (79) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:133:43: Signal is not used: 'cfg_default_wb_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (85) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:303:28: Signal is not used: 'cmo_flush_alloc_nline'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (89) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:304:28: Signal is not used: 'cmo_flush_alloc_way'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (93) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:311:28: Signal is not used: 'flush_check_nline'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (97) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:313:28: Signal is not driven, nor used: 'flush_alloc'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (101) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:315:28: Signal is not driven, nor used: 'flush_alloc_nline'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (105) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:316:28: Signal is not driven, nor used: 'flush_alloc_way'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (109) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:321:28: Signal is not used: 'flush_data_read_data'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (113) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:326:28: Signal is not used: 'ctrl_flush_alloc_nline'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (117) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:327:28: Signal is not used: 'ctrl_flush_alloc_way'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (121) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:329:28: Signal is not used: 'rtab_empty'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (125) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:330:28: Signal is not used: 'ctrl_empty'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (129) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:372:28: Signal is not used: 'mem_req_write_flush_ready'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (133) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:376:28: Signal is not used: 'mem_req_write_flush_data_ready'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (137) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:381:28: Signal is not used: 'mem_resp_write_flush_valid'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (141) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache.sv:382:28: Signal is not used: 'mem_resp_write_flush'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (145) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:197:35: Signal is not used: 'cmo_flush_all_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (149) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:229:35: Signal is not used: 'cfg_scrub_enable_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (153) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:230:35: Signal is not used: 'cfg_scrub_period_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (157) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:231:35: Signal is not used: 'cfg_scrub_restart_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (161) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:317:41: Signal is not driven, nor used: 'err_way_d'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (165) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:320:30: Signal is not driven, nor used: 'err_dir_rdata_q'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (169) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:320:47: Signal is not used: 'err_dir_rdata_d'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (173) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:324:30: Signal is not driven, nor used: 'err_dat_rdata_q'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (177) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:324:47: Signal is not used: 'err_dat_rdata_d'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (181) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:417:30: Signal is not used: 'st1_err_trigger'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (185) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl.sv:432:30: Signal is not used: 'scrub_req_ready'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (189) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_wbuf.sv:227:49: Signal is not used: 'ack_error'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (193) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:104:35: Signal is not used: 'mshr_alloc_wdata_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (197) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:105:35: Signal is not used: 'mshr_alloc_be_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (201) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:182:30: Signal is not used: 'mshr_alloc_way_q'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (205) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:200:30: Signal is not used: 'refill_dirty'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (209) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:201:30: Signal is not used: 'refill_dirty_valid'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (213) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:202:30: Signal is not used: 'refill_dirty_wdata'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (217) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:203:30: Signal is not used: 'refill_dirty_be'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (221) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:218:30: Signal is not used: 'refill_core_rsp_word'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (225) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_miss_handler.sv:241:30: Signal is not used: 'mshr_ack_cbuf_id'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (229) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_uncached.sv:215:27: Signal is not used: 'req_old_data_q'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (233) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_uncached.sv:234:27: Signal is not driven, nor used: 'data_amo_write_merge'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (237) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_cmo.sv:95:35: Signal is not used: 'flush_alloc_ready_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (241) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_cmo.sv:126:27: Signal is not used: 'cmoh_flush_req_w'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (245) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_cmo.sv:128:27: Signal is not used: 'cmoh_flush_req_set'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (249) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_cmo.sv:129:27: Signal is not used: 'cmoh_flush_req_tag'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (253) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_cmo.sv:130:27: Signal is not used: 'cmoh_flush_req_way'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (257) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_cmo.sv:137:11: Signal is not used: 'cmoh_way_incr'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (261) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_cmo.sv:137:26: Signal is not used: 'cmoh_way_reset'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (265) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl_pe.sv:46:36: Signal is not used: 'st0_req_need_rsp_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (269) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_ctrl_pe.sv:51:36: Signal is not used: 'st0_req_is_cmo_fence_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (273) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_memctrl.sv:139:49: Signal is not used: 'data_req_write_merge_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (277) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_memctrl.sv:344:48: Signal is not used: 'data_ecc_cor'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (281) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_memctrl.sv:344:62: Signal is not used: 'data_ecc_unc'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (285) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/common/hpdcache_data_resize.sv:49:20: Signal is not used: 'wlast_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (289) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/common/hpdcache_mux.sv:52:32: Signal is not used: 'sel_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (293) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_victim_sel.sv:42:35: Signal is not used: 'clk_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (297) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_victim_sel.sv:43:35: Signal is not used: 'rst_ni'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (301) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_victim_sel.sv:46:35: Signal is not used: 'updt_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (305) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_victim_sel.sv:47:35: Signal is not used: 'updt_set_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (309) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_victim_sel.sv:48:35: Signal is not used: 'updt_way_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (313) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_victim_sel.sv:51:35: Signal is not used: 'sel_victim_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (317) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_victim_sel.sv:52:35: Signal is not used: 'sel_dir_valid_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (321) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_victim_sel.sv:53:35: Signal is not used: 'sel_dir_wback_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (325) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_victim_sel.sv:54:35: Signal is not used: 'sel_dir_dirty_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (329) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/hpdcache_victim_sel.sv:56:35: Signal is not used: 'sel_victim_set_i'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (333) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/common/macros/behav/hpdcache_sram_1rw.sv:22:45: Signal is not used: 'rst_n'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (337) : %Warning-UNUSEDSIGNAL: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/common/macros/behav/hpdcache_sram_wbyteenable_1rw.sv:22:47: Signal is not used: 'rst_n'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (341) : %Warning-SYNCASYNCNET: hpdcache_wrapper.sv:101:48: Signal flopped as both synchronous and async: '__Vcellinp__hpdcache_wrapper__rst_ni'
+ WARNING  PRE_RESET at /home/zac888/cv-hpdcache/rtl/tb/build/verilate.log (350) : %Warning-UNOPTFLAT: /home/zac888/cv-hpdcache/rtl/tb/../../rtl/src/common/hpdcache_sync_buffer.sv:43:25: Signal unoptimizable: Circular combinational logic: 'hpdcache_wrapper.i_hpdcache.hpdcache_miss_handler_i.i_refill_core_rsp_buf.gen_buffer.i_sync_buffer.rok_o'
+ END WARNING SUMMARY
+
+ START ERROR SUMMARY
+ END ERROR SUMMARY
+
+Scanned 1 log file(s).
+Number passing logs           : 1
+
+Total number of errors        : 0
+Total number of warnings      : 85
+Total number of timing violns : 0
+Total missing end of test mgs : 0
+
+
+          PPPPP    AAAA     SSSS     SSSS   
+          P    P  A    A   S    S   S    S  
+          P    P  A    A    S        S      
+          PPPPP   AAAAAA     SS       SS    
+          P       A    A       S        S   
+          P       A    A   S    S   S    S  
+          P       A    A    SSSS     SSSS   
