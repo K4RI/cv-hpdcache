@@ -1,5 +1,5 @@
 CC=g++
-MODULE=mau
+TRACE=../../logs/run_zac_42
 
 ######## traduction vcd->seq ########
 
@@ -11,20 +11,20 @@ main:
 sim_seq: main
 	@echo
 	@echo "### TRADUCTION VCD-SEQ ###"
-	./main wave_R_${MODULE}.vcd 1
+	./main ${TRACE}.vcd 1
 
 show_seq: sim_seq
 # convertir et visualiser bcg
 	@echo
 	@echo "### AFFICHAGE SEQ ###"
-	bcg_io wave_R_${MODULE}.seq wave_R_${MODULE}.bcg
-	bcg_edit wave_R_${MODULE}.bcg
+	bcg_io ${TRACE}.seq ${TRACE}.bcg
+	bcg_edit ${TRACE}.bcg
 
 
 ################################
 
 inclusion:
-	bcg_open ../compositions/lnt/${MODULE}2_hide exhibitor < wave_R_${MODULE}.seq
+	bcg_open ../compositions/lnt/${MODULE}2_hide exhibitor < ${TRACE}.seq
 
 clean:	
 	rm -f *.bcg *.o *.ps main

@@ -41,9 +41,10 @@ void parseScope(string line, Scope *&scope) // "pass a pointer by reference"
 void parseVar(string line, map_ids &ID, Scope *scope)
 {
     vector<string> elems = split(line, ' ');
-    char id = (elems[3]).front();
+    string id = elems[3];
 
     if (ID.find(id) == ID.end()) { // s'il y est pas déjà
+        cout << elems[3] << " - " << elems[1] << " " << stoi(elems[2]) << " " << elems[4] << " - " << scope->get_name() << endl;
         ID[id] = {elems[1], stoi(elems[2]), elems[4], scope->get_name()};
     }
 }
@@ -54,55 +55,41 @@ void parseTime(string line, vec_changes &changes, timesteps *&cur_time)
     int t = stoi(line.substr(1, line.length()-1));
     changes.push_back({t, {}});
     cur_time = &(changes.back());
+    cout << cur_time->t << endl;
 }
+
 
 // ligne de la forme "b0001010 $"
-void parseValChange(string line, timesteps *&cur_time, map_ids ID, set<string> scopes)
+void parseValChange(string line, timesteps *&cur_time, map_ids ID, set<string> scopesigs)
 {
-    char id = line.back();
+    string id, val;
+    if (line[0] == 'b') {
+        vector<string> elems = split(line, ' ');
+        val = elems[0];
+        id = elems[1];
+    } else {
+        val = line[0];
+        id = line.substr(1, line.length()-1);
+    }
 
-    if (scopes.find(ID[id].scope) != scopes.end()){ // si le scope est bon
-        string val = trim(line.substr(0, line.length()-1), {' '});
+    if (scopesigs.find(scopesig(ID[id])) != scopesigs.end())
         (cur_time->changes)[id] = val;
-    }
 }
 
-
-/*
-void resetChangeFlag(map_tofill &mvc, Port p) {
-    for (auto &[idd, v] : mvc)
-        if (v.port == p)
-            v.has_changed = false;
-}
-
-
-void fillChanges(int t, vec_changes &changes, map_tofill &mvc, Port p) {
-    for (auto &[idd, v] : mvc) {
-        if (v.port == p and !v.has_changed and v.current_val != "") { // ?
-            // tout xput inchangé dans le cycle précédent, on le remplit
-            changes.push_back({t, idd, v.current_val});
-            v.has_changed = true;
+set<string> set_of_gates(vec_gates v){
+    set<string> s = {};    
+    for (auto &[gate, output, input, datas] : v) {
+        s.insert({output, input});
+        for (data_gate & d : datas) {
+            s.insert(d.name);
         }
     }
+    s.erase("");
+    return s;
 }
 
-bool isBalanced(vec_changes changes)
-{
-    map<int, int> counts;
-    for (auto &[t, id, val] : changes) {
-        counts[t]++;
-    }
-    for (auto &[t, cpt] : counts) {
-        if (counts[t] != counts[0]) {
-            cout << "isBalanced: " << t << " différent !" << endl;
-            return false;
-        }
-    }
-    return true;
-}
-*/
 
-void parseVCDFile(string filename, map_ids &ID, vec_changes &changes, bool verbose)
+void parseVCDFile(string filename, map_ids &ID, vec_changes &changes, vec_gates v, bool verbose)
 {
     // 1 - parcourir le vcd, remplir ID et changes
 
@@ -136,11 +123,26 @@ void parseVCDFile(string filename, map_ids &ID, vec_changes &changes, bool verbo
                 parseTime(line, changes, cur_time);
             
             } else if (!line.empty() and line[0] != '$') {
-                parseValChange(line, cur_time, ID, {"TOP"});
+                parseValChange(line, cur_time, ID, set_of_gates(v));
+
+                // parseValChange(line, cur_time, ID, {"hpdcache_wrapper.clk_i",
+                // "hpdcache_wrapper.core_req_valid_i",
+                // "hpdcache_wrapper.core_req_ready_o",
+                // "core_req_i.op",
+                // "core_req_i.wdata[0]",
+                // "core_req_i.sid",
+                // "core_req_i.tid",
+                // "core_req_i.addr_tag",
+                // "hpdcache_wrapper.core_rsp_valid_o",
+                // "core_rsp_o.rdata[0]",
+                // "core_rsp_o.sid",
+                // "core_rsp_o.tid"});
+
+                // parseValChange(line, cur_time, ID, {"#", "&", "5)", "*", "(", "-", ".", "1", "6)", "7)", "9)", ":)"});
             }
         }
         
-        if (verbose){            
+        if (verbose){
             cout << endl << "hiérarchie des scopes : " << scope << endl << endl;
         }
         file.close();

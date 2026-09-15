@@ -40,10 +40,10 @@ void parseVar(string line, map_ids & ID, Scope *scope);
 void parseTime(string line, vec_changes &changes, timesteps *&cur_time);
 
 // 3 : commence par tout sauf $. Note tout changement de valeur dans l'un des scopes notés.
-void parseValChange(string line, timesteps *&cur_time, map_ids ID, set<string> scopes);
+void parseValChange(string line, timesteps *&cur_time, map_ids ID, set<string> scopesigs);
 
 // fill : est-ce qu'on remplit les valeurs non-modifiées
-void parseVCDFile(string filename, map_ids &ID, vec_changes &changes, bool verbose);
+void parseVCDFile(string filename, map_ids &ID, vec_changes &changes, vec_gates v, bool verbose);
 
 
 #endif // PARSER_INCLUDED

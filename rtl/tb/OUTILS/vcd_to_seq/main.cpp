@@ -21,16 +21,17 @@ int main(int argc, char **argv) {
 
         map_ids ID;
         vec_changes changes;
+        vec_gates v = parseGATESFile("hpdcache", verbose);
 
         // lire le VCD
-        parseVCDFile(filename, ID, changes, verbose);
+        parseVCDFile(filename, ID, changes, v, verbose);
         if (verbose) {
-            cout << ID << endl;
+            cout << "v:" << v << endl;
+            cout << "ID:" << ID << endl;
             cout << changes_id({changes, ID}) << endl;
         }
 
         string name = removeFileExtension(filename); // retirer le .vcd
-        vec_gates v = parseGATESFile("mau", verbose);
         generateSEQFile(name, ID, changes, v, verbose); // écrire dans name.seq
 
         return EXIT_SUCCESS;
