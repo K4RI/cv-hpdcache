@@ -42,7 +42,7 @@ public:
         sensitive << clk_i.pos();
 
         seg.set_base(0x00000000ULL);
-        seg.set_length(0x00004000ULL); // TODO: limiter la length à quelques adresses ?
+        seg.set_length(0x00004000ULL); // 2^14
         seg.set_uncached(false);
 
         hpdcache_test_sequence::segptr->keep_only(0);
@@ -63,19 +63,24 @@ private:
     scv_smart_ptr<req_data_t> size;
     const unsigned int HPDCACHE_REQ_DATA_BYTES = HPDCACHE_REQ_DATA_WIDTH / 8;
 
+    int NADDR = 3;
+    int NDATA = 3;
+
 #if SC_VERSION_MAJOR < 3
     SC_HAS_PROCESS(hpdcache_test_zac_seq);
 #endif
 
     inline req_data_t create_random_data()
     {
-        data->next();  // TODO: limiter la data à quelques adresses
+        data->next();
+        data->keep_only(1,NDATA); //
         return data->read();
     }
 
     inline uint32_t create_random_size(bool is_amo)
     {
-        if (!is_amo) size->keep_only(0, 3);
+        if (!is_amo) size->keep_only(3, 3); // (0,3)
+        // 3 car 2^3=8 bytes dans le CONF_HPDCACHE_WORD_WIDTH*CONF_HPDCACHE_CL_WORDS=64
         else size->keep_only(2, 3);
 
         size->next();
@@ -104,14 +109,18 @@ private:
         std::shared_ptr<hpdcache_test_transaction_req> t;
 
         scv_smart_ptr<uint64_t> addr("addr");
+        scv_bag<uint64_t> address_distribution;
+        for (int i=1; i<=NADDR; i++){
+            address_distribution.push(i << 12); // 0x00001000ULL 2000 3000
+        }
+        addr->set_mode(address_distribution);
+        addr->next();
 
         while (!is_available_id()) wait();
 
         hpdcache_test_sequence::segptr->next();
         hpdcache_test_sequence::delay->next();
         hpdcache_test_sequence::op->next();
-
-        addr->next();
 
         t = acquire_transaction<hpdcache_test_transaction_req>();        
         t->req_op = op->read();
@@ -123,12 +132,11 @@ private:
 
         t->req_wr_policy_hint = hpdcache_test_transaction_req::HPDCACHE_WR_POLICY_WT;
 
-        uint32_t sz = create_random_size(t->is_amo() || t->is_amo_sc() || t->is_amo_lr());
+        uint32_t sz = create_random_size(t->is_amo() || t->is_amo_sc() || t->is_amo_lr()); // 3
 
-        uint64_t base = seg.get_base();
         uint64_t length = seg.get_length();
         uint32_t bytes = 1 << sz;
-        uint64_t address = ((base + (addr->read() % length)) / bytes) * bytes;
+        uint64_t address = ((addr->read() % length) / bytes) * bytes;
         uint32_t offset = address % HPDCACHE_REQ_DATA_BYTES;
 
         t->req_addr = address;

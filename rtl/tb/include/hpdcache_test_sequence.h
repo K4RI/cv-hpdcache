@@ -118,11 +118,11 @@ public:
 
     unsigned int allocate_id()
     {
-        unsigned int id;
+        static unsigned int id = 0;
 
         assert(is_available_id());
 
-        id = rand() % HPDCACHE_REQ_MAX_TRANS_ID;
+        id = (id + 1) % HPDCACHE_REQ_MAX_TRANS_ID;
         for (;;) {
             auto it = std::find(ids.begin(), ids.end(), id);
             if (it == ids.end()) {
