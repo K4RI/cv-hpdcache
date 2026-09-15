@@ -44,7 +44,7 @@ public:
               mem_model_init_mode_e init_mode = MEM_MODEL_INIT_RANDOM,
               uint64_t init_val = 0)
       : name_m(name)
-      , init_mode_m(MEM_MODEL_INIT_RANDOM)
+      , init_mode_m(init_mode)
       , init_val_m(init_val)
     {
     }

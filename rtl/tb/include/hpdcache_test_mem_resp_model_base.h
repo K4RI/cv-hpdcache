@@ -141,7 +141,7 @@ public:
     {
         std::string mem_model_name;
         mem_model_name = mem_model_name + "_" + nm;
-        memory_m = new mem_model(mem_model_name.c_str(), mem_model::MEM_MODEL_INIT_RANDOM);
+        memory_m = new mem_model(mem_model_name.c_str(), mem_model::MEM_MODEL_INIT_VALUE, 1);
 
         // set default values for delay distributions
         scv_bag<pair<int, int>> ra_delay_distribution;

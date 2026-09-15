@@ -72,8 +72,8 @@ private:
 
     inline req_data_t create_random_data()
     {
-        data->next();
         data->keep_only(1,NDATA); //
+        data->next();
         return data->read();
     }
 
