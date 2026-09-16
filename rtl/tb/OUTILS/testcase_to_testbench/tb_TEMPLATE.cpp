@@ -6,10 +6,13 @@
 #include <stdlib.h>
 #include <fstream>
 #include <iostream>
-#include <verilated.h>
-#include <verilated_vcd_c.h>
-#include "V%NOM_MODULE%.h"
-%INCLUDE_024UNIT%
+#include <map>
+#include <set>
+#include <vector>
+// #include <verilated.h>
+// #include <verilated_vcd_c.h>
+// #include "V%NOM_MODULE%.h"
+// %INCLUDE_024UNIT%
 
 #include <vector>
 using namespace std;
@@ -100,63 +103,61 @@ Action trimAction (BCG_TYPE_C_STRING str){
 }
 
 
-map<string, void*> fields;
+// map<string, void*> fields;
 
-// provient de seq_to_testbench/tb_template_2M :
-// Attribue à une porte une valeur d'offre.
-void call_input (V%NOM_MODULE% *&dut, string porte, string offre){
+// // provient de seq_to_testbench/tb_template_2M :
+// // Attribue à une porte une valeur d'offre.
+// void call_input (V%NOM_MODULE% *&dut, string porte, string offre){
 
-    if (offre == "FALSE") {
-        *(bool*)(fields[porte]) = false;
-    } else if (offre == "TRUE") {
-        *(bool*)(fields[porte]) = true;
-    %TYPEDEF_ENUMS%
-    } else {
-        try {
-            *(unsigned char*)(fields[porte]) = stoi(offre);
-        }
-        catch (string& s) {
-            std::cout << "ERREUR en lisant la ligne" <<  "\'" << porte << " " << offre << ": \"" << s << "\"" << endl;
-            exit(1);
-        }
-    }
-};
+//     if (offre == "FALSE") {
+//         *(bool*)(fields[porte]) = false;
+//     } else if (offre == "TRUE") {
+//         *(bool*)(fields[porte]) = true;
+//     %TYPEDEF_ENUMS%
+//     } else {
+//         try {
+//             *(unsigned char*)(fields[porte]) = stoi(offre);
+//         }
+//         catch (string& s) {
+//             std::cout << "ERREUR en lisant la ligne" <<  "\'" << porte << " " << offre << ": \"" << s << "\"" << endl;
+//             exit(1);
+//         }
+//     }
+// };
 
 
-// provient de seq_to_testbench/tb_template_2M :
-// S'assure qu'une porte a bien une valeur d'offre.
-bool assert_output (V%NOM_MODULE% *&dut, string porte, string offre){
+// // provient de seq_to_testbench/tb_template_2M :
+// // S'assure qu'une porte a bien une valeur d'offre.
+// bool assert_output (V%NOM_MODULE% *&dut, string porte, string offre){
 
-    // cout << porte << "==" << offre << " ? ";
-    if (offre == "FALSE") {
-        return (*(bool*)(fields[porte]) == false);
-    } else if (offre == "TRUE") {
-        return (*(bool*)(fields[porte]) == true);
-    } else {
-        // cout << porte << "=" << (int)(*(unsigned char*)(fields[porte])) << " - ";
-        return (*(unsigned char*)(fields[porte]) == stoi(offre));
-    };
-}
+//     if (offre == "FALSE") {
+//         return (*(bool*)(fields[porte]) == false);
+//     } else if (offre == "TRUE") {
+//         return (*(bool*)(fields[porte]) == true);
+//     } else {
+//         return (*(unsigned char*)(fields[porte]) == stoi(offre));
+//     };
+// }
 
 
 // provient de vcd_to_seq/seq_generator.hpp :
 // Correspondance entre portes LNT et signaux SV, à partir d'un fichier .gates.
 
+// nom de signal & ses abstractions
+struct data_gate {
+    string name = "";
+    map<string, string> abstraction = {};
+};
+
 struct gate_match {
     string gate = ""; // Name in formal model
     string output = "";
     string input = "";
-    string data = "";
-    string type = ""; // produce (le driver produit pour le dut) or receive (le driver reçoit du dut)
+    vector<data_gate> datas = {};
 };
 
 using vec_gates = vector<gate_match>;
 
-ostream& operator<<(ostream &os, vec_gates v){
-    for(int i(0); i<v.size(); ++i)
-        os << v[i].gate << " : output=" << v[i].output << ", input=" << v[i].input << ", data=" << v[i].data << ", type=" << v[i].type << endl;
-    return os;
-}
 
 vec_gates parseGATESFile(string filename){
     ifstream file (filename + ".gates");
@@ -166,13 +167,14 @@ vec_gates parseGATESFile(string filename){
         string line;
         vec_gates v;
         gate_match current;
-
+        
+        vector<string> abs;
         while (getline (file, line))
         {
             if (line.length() == 0) {                
                 v.push_back(current);
                 current = {};
-            } else {                
+            } else {
                 string s = line.substr(2,line.length()-1);
                 switch (line[0]){
                     case 'n':
@@ -191,92 +193,83 @@ vec_gates parseGATESFile(string filename){
                         break;
                     
                     case 'd':
-                        current.data = s;
+                        current.datas.push_back({s, {}});
                         break;
                     
-                    case 't':
-                        current.type = s;
+                    case '-': // abstractions
+                        abs = split(s, ' ');
+                        current.datas.back().abstraction[abs[0]] = abs[1];
                         break;
-                    
+
                     default:
-                        // cout << "EUH" << endl;
+                        throw string("caractère inconnu dans fichier io : ") + filename;
                         break;
                 }
                 
             }
         }
-        if (current.gate + current.output + current.input + current.data + current.type != "") { // last gate
+        if ((current.gate + current.output + current.input != "") || (current.datas.size() > 0)) { // last gate
             v.push_back(current);
         }
-        // cout << "gates : " << endl << v << endl;
         file.close();
         return v;
     }
     else
     {
-        throw string("erreur lecture fichier .gates : ") + filename;
+        throw string("erreur lecture fichier io : ") + filename;
     }
 }
 
-vluint64_t sim_time;
-// Si les _o sont bons, envoyer les _i
-bool do_action (V%NOM_MODULE% *&dut, BCG_TYPE_C_STRING s, vec_gates v, VerilatedVcdC *&m_trace) {
+uint64_t sim_time; //
+// // Si les _o sont bons, envoyer les _i
+// bool do_action (V%NOM_MODULE% *&dut, BCG_TYPE_C_STRING s, vec_gates v, VerilatedVcdC *&m_trace) {
     
-    // cout << "on essaie do action sur : " << s << endl;
-    Action act = trimAction(s);
-    // cout << "porte=" << act.gate << ", offre=" << act.offer << endl;
+//     Action act = trimAction(s);
 
-    for (auto const &[gate, output, input, data, type] : v) {
-        if (gate == act.gate) {
+//     for (auto const &[gate, output, input, data, type] : v) {
+//         if (gate == act.gate) {
 
-            if (type == "produce") {
-                // cout << "producteur" << endl;
-                if (assert_output(dut, output, "1")) { // ready_o
-                    // cout << "asserté" << endl;
-                    call_input(dut, input, "1"); // valid_i
-                    call_input(dut, data, act.offer); // data_i
-                    return true;
-                } else {
-                    // cout << "pas asserté" << endl;
-                    return false;
-                }
+//             if (type == "produce") {
+//                 if (assert_output(dut, output, "1")) { // ready_o
+//                     call_input(dut, input, "1"); // valid_i
+//                     call_input(dut, data, act.offer); // data_i
+//                     return true;
+//                 } else {
+//                     return false;
+//                 }
                 
-            } else if (type == "receive") {
-                // cout << "receveur " << output << "-" << data << endl;
-                if (assert_output(dut, data, act.offer) && (assert_output(dut, output, "1"))){ // valid_o & data_o
-                    // cout << "asserté" << endl;
-                    call_input(dut, input, "1"); // ready_i
-                    return true;
-                } else {
-                    // cout << "pas asserté" << endl;
-                    return false;
-                }
-            } else if (type == "clock") {
+//             } else if (type == "receive") {
+//                 if (assert_output(dut, data, act.offer) && (assert_output(dut, output, "1"))){ // valid_o & data_o
+//                     call_input(dut, input, "1"); // ready_i
+//                     return true;
+//                 } else {
+//                     return false;
+//                 }
+//             } else if (type == "clock") {
                 
-                call_input(dut, input, "1");
-                dut->eval();
-                m_trace->dump(sim_time); sim_time++;
-                call_input(dut, input, "0"); // 1->0
-                dut->eval();
-                m_trace->dump(sim_time); sim_time++;
-                call_input(dut, input, "1"); // 0->1
-                dut->eval();
-                for (auto const &[gate_, output_, input_, data_, type_] : v) {
-                    if (type_ == "reset") {
-                        call_input(dut, input_, "1");
-                    }
-                    else if (type_ != "clock") {
-                        // cout << "on met à zéro le " << input_ << endl;
-                        call_input(dut, input_, "0"); // valeur par défaut
-                    }
-                }
-                return true;
-            }
-            throw string("type (produce/receive) non-précisé dans le .gates pour la porte " + gate);
-        }
-    }
-    return false;
-}
+//                 call_input(dut, input, "1");
+//                 dut->eval();
+//                 m_trace->dump(sim_time); sim_time++;
+//                 call_input(dut, input, "0"); // 1->0
+//                 dut->eval();
+//                 m_trace->dump(sim_time); sim_time++;
+//                 call_input(dut, input, "1"); // 0->1
+//                 dut->eval();
+//                 for (auto const &[gate_, output_, input_, data_, type_] : v) {
+//                     if (type_ == "reset") {
+//                         call_input(dut, input_, "1");
+//                     }
+//                     else if (type_ != "clock") {
+//                         call_input(dut, input_, "0"); // valeur par défaut
+//                     }
+//                 }
+//                 return true;
+//             }
+//             throw string("type (produce/receive) non-précisé dans le .gates pour la porte " + gate);
+//         }
+//     }
+//     return false;
+// }
 
 
 #define MAX_SIM_TIME 50
@@ -286,7 +279,7 @@ int tc_execute(BCG_TYPE_FILE_NAME tc_filename, int argc, char** argv) {
     BCG_TYPE_OBJECT_TRANSITION bcg_graph;
     
     CAESAR_CREATE_HIDE_1 (&match_input,
-        "%IO%",
+        "hpdcache.io",
         "input",
         "output",
     2); // match_kind = gate
@@ -297,17 +290,17 @@ int tc_execute(BCG_TYPE_FILE_NAME tc_filename, int argc, char** argv) {
     bcg_print_info (bcg_graph);
 
     // la partie avec Verilator
-    V%NOM_MODULE% *dut = new V%NOM_MODULE%;
-    vec_gates v = parseGATESFile("%NOM_MODULE%");
+    // V%NOM_MODULE% *dut = new V%NOM_MODULE%;
+    vec_gates v = parseGATESFile("hpdcache");
     
     // %INPUT_BODY%
     // %OUTPUT_BODY%
 
     sim_time = 0;
-    Verilated::traceEverOn(true);
-    VerilatedVcdC *m_trace = new VerilatedVcdC;
-    dut->trace(m_trace, 5);
-    m_trace->open("%NOM_MODULE%.vcd");
+    // Verilated::traceEverOn(true);
+    // VerilatedVcdC *m_trace = new VerilatedVcdC;
+    // dut->trace(m_trace, 5);
+    // m_trace->open("%NOM_MODULE%.vcd");
     
     BCG_TYPE_STATE_NUMBER current = BCG_OT_INITIAL_STATE (bcg_graph);
     BCG_TYPE_C_STRING input = NULL;
@@ -341,25 +334,18 @@ int tc_execute(BCG_TYPE_FILE_NAME tc_filename, int argc, char** argv) {
                 nb_inputs++;
         } BCG_OT_END_ITERATE;
 
-        // cout << endl << "état " << current << endl;
-        // cout << "sim_time=" << sim_time << endl;
-        // cout << "nb_inputs=" << nb_inputs << endl;
-
 	    /* priorite 1 : emission de l'entrée */
-        assert (nb_inputs <= 1);
+        // assert (nb_inputs <= 1);
 	    if (nb_inputs == 1) {
             BCG_OT_ITERATE_P_LN (bcg_graph, current, label, next) {
                 s = BCG_OT_LABEL_STRING (bcg_graph, label);
-                // cout << "on regarde : " << next << " (étiquette " << s << ")" << endl;
                 if (IS_INPUT (s)) {
-                    // cout << "on VEUT entrer dans : " << next << endl;
-                    if (do_action (dut, s, v, m_trace)) {
-                        // cout << "on ENTRE dans : " << next << endl;                        
-                        Action act = trimAction(s);
-                        fprintf (stdout, ">>> (%li->%li) action chosen: gate=%s, offer=%s\n", current, next, act.gate.c_str(), act.offer.c_str());
-                        current = next;
-                        break;
-                    }
+                    // if (do_action (dut, s, v, m_trace)) {                   
+                    //     Action act = trimAction(s);
+                    //     fprintf (stdout, ">>> (%li->%li) action chosen: gate=%s, offer=%s\n", current, next, act.gate.c_str(), act.offer.c_str());
+                    //     current = next;
+                    //     break;
+                    // }
 		        }
 
                 // pas d'autre transition donc finir en fail
@@ -375,25 +361,21 @@ int tc_execute(BCG_TYPE_FILE_NAME tc_filename, int argc, char** argv) {
                         s'assurer que les outputables sont bien dans les successeurs du TC
                         et en prendre une s'il y en a */
         found_successor = BCG_FALSE;
-        for (auto const &[gate, output, input, data, type] : v) {
-            // cout << "output : " << output << " - type " << type << endl;
+        for (auto const &[gate, output, input, data] : v) {
+            string type = ""; //
             if (type != "clock" && type != "reset" && !IS_INPUT (stocc(gate))
-                    && assert_output(dut, output, "1") && !(visited_outputs.contains(gate))){
-                // cout << "data : " << data;
-                string offre = to_string(*(unsigned char*)(fields[data]));
-                // cout << " - offre=" << offre << endl;
-                // cout << type << "-" << output << "-" << input << "-" << offre << endl;
+                     && !(visited_outputs.contains(gate))){ // && assert_output(dut, output, "1")
+                string offre; // = to_string(*(unsigned char*)(fields[data]));
 
                 // chercher s'il est bien dans les successeurs du test case
                 found_output = BCG_FALSE;
                 BCG_OT_ITERATE_P_LN (bcg_graph, current, label, next) {
                     s = BCG_OT_LABEL_STRING (bcg_graph, label);
-                    // cout << s << endl;
                     Action act = trimAction(s);                    
                     if ((gate == act.gate) && (offre == act.offer)) {
                         if (!found_successor) { // on avance qu'une seule fois
                             found_successor = BCG_TRUE;
-                            do_action (dut, s, v, m_trace);
+                            // do_action (dut, s, v, m_trace);
                             visited_outputs.insert(gate);
                             fprintf (stdout, ">>> (%li->%li) action chosen: gate=%s, offer=%s\n", current, next, act.gate.c_str(), act.offer.c_str());
                             current = next;
@@ -415,13 +397,14 @@ int tc_execute(BCG_TYPE_FILE_NAME tc_filename, int argc, char** argv) {
         
         /* priorite 3 : emprunter le clock */
         
-        for (auto const &[gate, output, input, data, type] : v) {
+        for (auto const &[gate, output, input, data] : v) {
+            string type = ""; //
             if (type == "clock") {
                 BCG_OT_ITERATE_P_LN (bcg_graph, current, label, next) {
                     s = BCG_OT_LABEL_STRING (bcg_graph, label);
                     if (streq (s, stocc(gate))) {
                         found_successor = BCG_TRUE;
-                        do_action (dut, stocc(gate), v, m_trace);
+                        // do_action (dut, stocc(gate), v, m_trace);
                         visited_outputs.clear();
                         fprintf (stdout, ">>> (%li->%li) %s\n", current, next, gate.c_str());
                         current = next;
@@ -443,9 +426,9 @@ int tc_execute(BCG_TYPE_FILE_NAME tc_filename, int argc, char** argv) {
 
     END:    
 
-        m_trace->close();
+        // m_trace->close();
         BCG_OT_READ_BCG_END (&bcg_graph);
-        delete dut;
+        // delete dut;
         exit(EXIT_SUCCESS);
 }
 
