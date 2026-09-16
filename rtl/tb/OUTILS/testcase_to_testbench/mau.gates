@@ -1,0 +1,25 @@
+n CLK
+i clk_i
+t clock
+
+n RST
+i rst_ni
+t reset
+
+n CORE_REQ
+o core_req_ready_o
+i core_req_valid_i
+d core_req_data_i
+t produce
+
+n MOD_MEM_0
+o mod_mem_valid_o[0]
+i mod_mem_ready_i[0]
+d mod_mem_data_o[0]
+t receive
+
+n MOD_MEM_1
+o mod_mem_valid_o[1]
+i mod_mem_ready_i[1]
+d mod_mem_data_o[1]
+t receive
