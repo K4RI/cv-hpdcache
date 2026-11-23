@@ -1,12 +1,12 @@
 n CLK
 i hpdcache_wrapper.clk_i
 
-n CORE_REQ
+n CRI_REQ
 i hpdcache_wrapper.core_req_valid_i
 o hpdcache_wrapper.core_req_ready_o
 d core_req_i.op
-- 0 Read
-- 1 Write
+- 0 Load
+- 1 Store
 d core_req_i.wdata[0]
 - 0 NoData
 - 1 D1
@@ -19,7 +19,7 @@ d core_req_i.addr_tag
 - 2 A2
 - 3 A3
 
-n CORE_RSP
+n CRI_RSP
 o hpdcache_wrapper.core_rsp_valid_o
 d core_rsp_o.rdata[0]
 - 0 NoData

@@ -61,7 +61,7 @@ build_tb:
 verilate: build_tb
 	@echo
 	@echo "### VERILATING ###"
-	verilator -CFLAGS "-std=c++23 -I${CADP}/incl -L${CADP}/bin.x64 -lcaesar -lBCG -lBCG_IO -lcaesar_plug -lm -Wno-write-strings" -LDFLAGS "-I${CADP}/incl -L${CADP}/bin.x64 -lcaesar -lBCG -lBCG_IO -lcaesar_plug -lm" --Wall --trace --x-assign 0 --x-initial 0 -Wno-UNUSEDSIGNAL $(PARAMS_$(MODULE)) -cc -I${SV_DIR} $(MODULE).sv --exe tb_explore_$(MODULE).cpp
+	verilator -CFLAGS "-std=c++23 -I${CADP}/incl -Wno-write-strings" --Wall --trace --x-assign 0 --x-initial 0 -Wno-UNUSEDSIGNAL $(PARAMS_$(MODULE)) -cc -I${SV_DIR} $(MODULE).sv --exe tb_explore_$(MODULE).cpp
 
 build: verilate
 	@echo

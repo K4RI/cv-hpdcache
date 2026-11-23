@@ -125,7 +125,7 @@ private:
         t = acquire_transaction<hpdcache_test_transaction_req>();        
         t->req_op = op->read();
         t->req_wdata = (t->is_store()) ? create_random_data() : 0;
-        t->req_sid = 0;
+        t->req_sid = 1;
         t->req_tid = allocate_id();
         t->req_abort = false;
         t->req_phys_indexed = false;

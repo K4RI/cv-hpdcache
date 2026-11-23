@@ -56,12 +56,6 @@ string toUpper(string str);
 // Divise str en plusieurs substrings délimités par delim, et les entre dans le vecteur elems.
 vector<string> split(string str, char delim);
 
-
-struct data_t {
-    string name = "";
-    map<string, string> abstraction = {};
-};
-
 // nom de signal & ses abstractions
 struct data_gate {
     string name = "";

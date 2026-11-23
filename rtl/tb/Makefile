@@ -109,6 +109,9 @@ VERILATOR_FLAGS     += -Wall -Wno-fatal \
                        -O3 -I$(HPDCACHE_DIR)/rtl/src \
                        --x-assign unique --x-initial unique
 
+VERILATOR_FLAGS     += -CFLAGS "-std=c++17 -I${CADP}/incl -I$(TB_DIR)/OUTILS/testcase_to_testbench" \
+					   -LDFLAGS "-L${CADP}/bin.x64 -lcaesar -lBCG -lBCG_IO -lcaesar_plug -lm"
+
 ifneq ($(DISABLE_TRACE),1)
 VERILATOR_FLAGS += --trace --trace-structs
 endif
