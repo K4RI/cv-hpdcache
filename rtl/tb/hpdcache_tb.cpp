@@ -37,6 +37,7 @@
 #include "sequence_lib/hpdcache_test_unique_set_seq.h"
 #include "sequence_lib/hpdcache_test_write_seq.h"
 #include "sequence_lib/hpdcache_test_zac_seq.h"
+#include "sequence_lib/hpdcache_test_zac_tb_seq.h"
 
 class hpdcache_test
 {
@@ -321,6 +322,8 @@ public:
             seq = std::make_shared<hpdcache_test_from_trace_seq>("from_trace", file_name);
         } else if (seq_name == "zac") {
             seq = std::make_shared<hpdcache_test_zac_seq>("zac");
+        } else if (seq_name == "zac_tb") {
+            seq = std::make_shared<hpdcache_test_zac_tb_seq>("zac_tb", file_name);
         } else {
             std::cout << "error: sequence " << seq_name << " not found" << std::endl;
             exit(EXIT_FAILURE);
